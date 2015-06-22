@@ -12,10 +12,12 @@ public final class SceneMng implements Disposable, Event {
 	
 	public void loadScene(Scene scene){
 		if(current != null){
+			this.current.event(Event.SCENE_CLOSE);
 			current.dispose();
 		}
 		
 		this.current = scene;
+		this.current.event(Event.SCENE_LOAD);
 	}
 	
 	public void update(OrthographicCamera camera) {

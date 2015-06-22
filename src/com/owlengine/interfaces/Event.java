@@ -15,8 +15,10 @@ public interface Event {
 	public static final int KEY_DOWN = 6;
 	public static final int KEY_UP = 7;
 	public static final int KEY_TYPE = 8;
-	
-	// Network Events
+
+	// Scene events
+	public static final int SCENE_LOAD = 9;
+	public static final int SCENE_CLOSE = 10;
 	
 	//
 	public void event(int code);

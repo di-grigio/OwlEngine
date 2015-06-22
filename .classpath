@@ -9,8 +9,8 @@
 	<classpathentry exported="true" kind="lib" path="lib/gdx-backend-lwjgl-1.6.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/lwjgl-2.9.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/lwjgl_util-2.9.2.jar"/>
-	<classpathentry kind="lib" path="lib/lwjgl-platform-2.9.2-natives-windows.jar"/>
-	<classpathentry kind="lib" path="lib/gdx-freetype-platform-1.6.0-natives-desktop.jar"/>
-	<classpathentry kind="lib" path="lib/gdx-platform-1.6.0-natives-desktop.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/lwjgl-platform-2.9.2-natives-windows.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gdx-freetype-platform-1.6.0-natives-desktop.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gdx-platform-1.6.0-natives-desktop.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
