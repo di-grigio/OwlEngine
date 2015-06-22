@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.owlengine.interfaces.Event;
 import com.owlengine.resources.Resources;
-import com.owlengine.ui.Frame;
-import com.owlengine.ui.Widget;
 
 public final class SceneMng implements Disposable, Event {
 
@@ -49,53 +47,19 @@ public final class SceneMng implements Disposable, Event {
 
 	@Override
 	public void event(int code) {
+		current.uiEvent(code);
 		current.event(code);
 	}
 
 	@Override
 	public void event(int code, int data) {
+		current.uiEvent(code, data);
 		current.event(code, data);
 	}
 
 	@Override
 	public void event(int code, char data) {
+		current.uiEvent(code, data);
 		current.event(code, data);
-	}
-	
-	// UI
-	public Widget getWidget(int id){
-		if(current != null){
-			return current.getWidget(id);
-		}
-		else{
-			return null;
-		}
-	}
-	
-	public Widget getWidget(String title){
-		if(current != null){
-			return current.getWidget(title);
-		}
-		else{
-			return null;
-		}
-	}
-	
-	public Frame getFrame(int id) {
-		if(current != null){
-			return current.getFrame(id);
-		}
-		else{
-			return null;
-		}
-	}
-
-	public Frame getFrame(String title) {
-		if(current != null){
-			return current.getFrame(title);
-		}
-		else{
-			return null;
-		}
 	}
 }

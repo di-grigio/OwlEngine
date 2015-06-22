@@ -6,6 +6,10 @@ public final class Log {
 		System.out.println(data);
 	}
 
+	public static void debug(String data) {
+		System.out.println("DEBUG: " + data);
+	}
+	
 	public static void err(String data) {
 		System.err.println(data);
 	}

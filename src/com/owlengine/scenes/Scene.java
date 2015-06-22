@@ -22,41 +22,48 @@ public abstract class Scene implements Draw, Event, Disposable {
 	}
 	
 	public final void drawUI(final SpriteBatch batch){
-		ui.draw(batch);
+		if(ui != null){
+			ui.draw(batch);
+		}
+	}
+	
+	// Get UI elements 
+	protected Frame getFrame(String title){
+		return ui.getFrame(title);
+	}
+	
+	protected Widget getWidget(String title){
+		return ui.getWidget(title);
+	}
+	
+	// Receiving events
+	public final void uiEvent(final int code){
+		ui.event(code);
+	}
+	
+	public final void uiEvent(final int code, final int data){
+		ui.event(code, data);
+	}
+	
+	public final void uiEvent(final int code, final char data){
+		ui.event(code, data);
 	}
 	
 	@Override
 	public void event(final int code) {
-		ui.event(code);
+		
 	}
 	
 	@Override
 	public void event(final int code, final int data) {
-		ui.event(code, data);
+		
 	}
 
 	@Override
 	public void event(final int code, final char data) {
-		ui.event(code, data);
+		
 	}
 	
 	abstract public void drawHUD(SpriteBatch batch);
 	abstract public void update(OrthographicCamera camera);
-	
-	// UI
-	public Widget getWidget(int id) {
-		return ui.getWidget(id);
-	}
-
-	public Widget getWidget(String title) {
-		return ui.getWidgets(title);
-	}
-
-	public Frame getFrame(int id) {
-		return ui.getFrame(id);
-	}
-
-	public Frame getFrame(String title) {
-		return ui.getFrame(title);
-	}
 }

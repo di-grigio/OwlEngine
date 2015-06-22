@@ -115,24 +115,6 @@ public final class UI implements Draw, Event {
 		}
 	}
 	
-	// Search Frames
-	public Frame getFrame(int id){
-		return framesId.get(id);
-	}
-	
-	public Frame getFrame(String title){
-		return framesTitle.get(title);
-	}
-	
-	// Search Widgets
-	public Widget getWidget(int id){
-		return widgetsId.get(id);
-	}
-	
-	public Widget getWidgets(String title){
-		return widgetsTitle.get(title);
-	}
-	
 	// Render
 	@Override
 	public void draw(final SpriteBatch batch) {
@@ -280,5 +262,14 @@ public final class UI implements Draw, Event {
 				keyType(data);
 				break;
 		}
+	}
+
+	// Get objected
+	public Frame getFrame(String title) {
+		return framesTitle.get(title);
+	}
+
+	public Widget getWidget(String title) {
+		return widgetsTitle.get(title);
 	}
 }
