@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.owlengine.input.UserInput;
 import com.owlengine.interfaces.Draw;
 import com.owlengine.interfaces.Script;
-import com.owlengine.resources.Resources;
+import com.owlengine.resources.Assets;
 
 abstract public class Widget implements Draw {
 
@@ -50,12 +50,6 @@ abstract public class Widget implements Draw {
 		this.parent = frame;
 		
 		this.alignment = Alignment.ABSOLUTE;
-		
-		this.texNormal = Resources.tex(null);
-		this.texSelected = Resources.tex(null);
-		this.texDisabled = Resources.tex(null);
-		
-		this.font = Resources.font(null);
 	}
 	
 	//
@@ -240,18 +234,22 @@ abstract public class Widget implements Draw {
 	
 	// Graphics
 	protected final void setTexNormal(final String key) {
-		this.texNormal = Resources.tex(key);
+		this.texNormal = Assets.getTex(key);
+	}
+	
+	protected final void setTexNormal(final Texture tex){
+		this.texNormal = tex;
 	}
 	
 	protected final void setTexSelected(final String key){
-		this.texSelected = Resources.tex(key);
+		this.texSelected = Assets.getTex(key);
 	}
 
 	protected final void setTexDisabled(final String key) {
-		this.texDisabled = Resources.tex(key);
+		this.texDisabled = Assets.getTex(key);
 	}
 	
 	protected final void setFont(final String key){
-		this.font = Resources.font(key);
+		this.font = Assets.getFont(key);
 	}
 }

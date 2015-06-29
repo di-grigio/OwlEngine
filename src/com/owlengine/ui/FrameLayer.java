@@ -13,7 +13,7 @@ public final class FrameLayer implements Draw {
 	// data
 	private Widget [] widgets;
 	
-	public void build(Frame frame, UI ui, JSONArray data, Script script) {
+	public void build(final Frame frame, final UI ui, final JSONArray data, final Script script) {
 		try {
 			widgets = new Widget[data.size()];
 			
@@ -50,7 +50,7 @@ public final class FrameLayer implements Draw {
 			}
 		}
 	}
-	
+
 	@Override
 	public void draw(final SpriteBatch batch) {
 		if(widgets != null){

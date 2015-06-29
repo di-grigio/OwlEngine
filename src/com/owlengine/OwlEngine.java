@@ -3,18 +3,18 @@ package com.owlengine;
 import com.badlogic.gdx.utils.Disposable;
 import com.owlengine.lua.LuaEngine;
 import com.owlengine.lua.LuaLib;
-import com.owlengine.resources.Resources;
+import com.owlengine.resources.Assets;
 import com.owlengine.scenes.SceneMng;
 import com.owlengine.tools.Tools;
 
 public final class OwlEngine implements Disposable {
 
-	private static Resources resources;
-	private static SceneMng sceneMng;
+	private Assets assets;
+	private SceneMng sceneMng;
 	
 	public OwlEngine(final LuaLib lib) {
 		// 
-		resources = new Resources();
+		assets = new Assets();
 		sceneMng = new SceneMng();
 		
 		// static 
@@ -22,17 +22,17 @@ public final class OwlEngine implements Disposable {
 		new LuaEngine(sceneMng, lib);
 	}
 	
-	public static SceneMng getSceneMng(){
+	public SceneMng getSceneMng(){
 		return sceneMng;
 	}
-
-	public static Resources getResources() {
-		return resources;
+	
+	public Assets getAssets(){
+		return assets;
 	}
 
 	@Override
 	public void dispose() {
-		resources.dispose();
+		assets.dispose();
 		sceneMng.dispose();
 	}
 }

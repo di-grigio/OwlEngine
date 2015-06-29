@@ -13,7 +13,6 @@ import org.json.simple.JSONValue;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.owlengine.interfaces.Draw;
 import com.owlengine.interfaces.Event;
-import com.owlengine.resources.Resources;
 import com.owlengine.tools.Log;
 
 public final class UI implements Draw, Event {
@@ -21,8 +20,8 @@ public final class UI implements Draw, Event {
 	// JSON type
 	private static final String JSON_CONTENT = "content";
 	private static final String JSON_TYPE_FRAME = "frame";
-	private static final String JSON_TYPE_TEXTURE = "texture";
-	private static final String JSON_TYPE_FONT = "font";
+	//private static final String JSON_TYPE_TEXTURE = "texture";
+	//private static final String JSON_TYPE_FONT = "font";
 	
 	// data
 	private HashMap<Integer, Frame>  framesId;
@@ -91,18 +90,19 @@ public final class UI implements Draw, Event {
 					addFrame(new Frame(this, element));		
 				}
 				
-				if(type.equalsIgnoreCase(JSON_TYPE_FONT)){
-					Resources.jsonLoadFont(element);
+				/*
+				else if(type.equalsIgnoreCase(JSON_TYPE_FONT)){
+					Assets.jsonLoadFont(element);
 				}
-				
-				if(type.equalsIgnoreCase(JSON_TYPE_TEXTURE)){
-					Resources.jsonLoadTex(element);
+				else if(type.equalsIgnoreCase(JSON_TYPE_TEXTURE)){
+					Assets.jsonLoadTex(element);
 				}
+				*/
 			}
 		}
 	}
 	
-	protected void addFrame(Frame frame) {
+	protected void addFrame(final Frame frame) {
 		framesId.put(frame.id(), frame);
 		framesTitle.put(frame.title(), frame);
 	}
@@ -113,6 +113,11 @@ public final class UI implements Draw, Event {
 		if(widget.title() != null){
 			widgetsTitle.put(widget.title(), widget);
 		}
+	}
+	
+	// Access to elements
+	public Widget getWidget(String title) {
+		return widgetsTitle.get(title);
 	}
 	
 	// Render
@@ -262,14 +267,5 @@ public final class UI implements Draw, Event {
 				keyType(data);
 				break;
 		}
-	}
-
-	// Get objected
-	public Frame getFrame(String title) {
-		return framesTitle.get(title);
-	}
-
-	public Widget getWidget(String title) {
-		return widgetsTitle.get(title);
 	}
 }

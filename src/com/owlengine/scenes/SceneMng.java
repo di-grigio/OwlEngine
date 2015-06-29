@@ -1,10 +1,11 @@
 package com.owlengine.scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.owlengine.interfaces.Event;
-import com.owlengine.resources.Resources;
+import com.owlengine.tools.Log;
 
 public final class SceneMng implements Disposable, Event {
 
@@ -21,23 +22,41 @@ public final class SceneMng implements Disposable, Event {
 	}
 	
 	public void update(OrthographicCamera camera) {
-		current.update(camera);
+		if(current != null){
+			current.update(camera);
+		}
+		else{
+			Log.err("Engine ERR: Scenes not found (update)");
+			Gdx.app.exit();
+		}
 	}
 	
-	public void draw(final SpriteBatch sceneBatch, final SpriteBatch uiBatch, Resources resources) {
-		sceneBatch.begin();
-		current.draw(sceneBatch);
-		sceneBatch.end();
-		
-		uiBatch.begin();
-		current.drawUI(uiBatch);
-		uiBatch.end();
+	public void draw(final SpriteBatch sceneBatch, final SpriteBatch uiBatch) {
+		if(current != null){
+			sceneBatch.begin();
+			current.draw(sceneBatch);
+			sceneBatch.end();
+			
+			uiBatch.begin();
+			current.drawUI(uiBatch);
+			uiBatch.end();
+		}
+		else{
+			Log.err("Engine ERR: Scenes not found (drawScene)");
+			Gdx.app.exit();
+		}
 	}
 	
-	public void drawHUD(SpriteBatch batch, Resources resources) {
-		batch.begin();
-		current.drawHUD(batch);
-		batch.end();
+	public void drawHUD(SpriteBatch batch) {
+		if(current != null){
+			batch.begin();
+			current.drawHUD(batch);
+			batch.end();
+		}
+		else{
+			Log.err("Engine ERR: Scenes not found (drawHUD)");
+			Gdx.app.exit();
+		}
 	}
 
 	@Override
@@ -49,19 +68,25 @@ public final class SceneMng implements Disposable, Event {
 
 	@Override
 	public void event(int code) {
-		current.uiEvent(code);
-		current.event(code);
+		if(current != null){
+			current.uiEvent(code);
+			current.event(code);
+		}
 	}
 
 	@Override
 	public void event(int code, int data) {
-		current.uiEvent(code, data);
-		current.event(code, data);
+		if(current != null){
+			current.uiEvent(code, data);
+			current.event(code, data);
+		}
 	}
 
 	@Override
 	public void event(int code, char data) {
-		current.uiEvent(code, data);
-		current.event(code, data);
+		if(current != null){
+			current.uiEvent(code, data);
+			current.event(code, data);
+		}
 	}
 }

@@ -4,10 +4,12 @@ import org.json.simple.JSONObject;
 
 import com.badlogic.gdx.Gdx;
 import com.owlengine.interfaces.Script;
-import com.owlengine.resources.Resources;
+import com.owlengine.resources.Assets;
 import com.owlengine.tools.Log;
 import com.owlengine.ui.widgets.Button;
 import com.owlengine.ui.widgets.Image;
+import com.owlengine.ui.widgets.Label;
+import com.owlengine.ui.widgets.Minimap;
 import com.owlengine.ui.widgets.ProgressBar;
 
 final class WidgetBuilder {
@@ -42,15 +44,21 @@ final class WidgetBuilder {
 	private static final String EVENT_ACTION_SECOND = "on_action_second";
 
 	// JSON Widget types
+	private static final String WIDGET_TYPE_LABEL = "label";
 	private static final String WIDGET_TYPE_BUTTON = "button";
 	private static final String WIDGET_TYPE_IMAGE = "image";
 	private static final String WIDGET_TYPE_PROGRESS_BAR = "progress_bar";
+	private static final String WIDGET_TYPE_MINIMAP = "minimap";
 	
 	// JSON Progress Bar fieds
 	private static final String PROGRESS_BAR_VALUE = "value";
 	private static final String PROGRESS_BAR_MAX_VALUE = "max";
 	
-	protected static Widget build(Frame frame, JSONObject json, Script script) {
+	// JSON Minimap
+	private static final String MINIMAP_CENTRING = "centering";
+	private static final String MINIMAP_CAMERA_FRAME = "texture_camera_frame";
+	
+	protected static Widget build(final Frame frame, final JSONObject json, final Script script) {
 		Widget widget = null;
 		
 		if(json.containsKey(CONTENT)){
@@ -58,7 +66,10 @@ final class WidgetBuilder {
 				final String type = (String)json.get(CONTENT);
 				
 				// Components
-				if(type.equals(WIDGET_TYPE_BUTTON)){
+				if(type.equals(WIDGET_TYPE_LABEL)){
+					widget = buildLabel(frame, json);
+				}
+				else if(type.equals(WIDGET_TYPE_BUTTON)){
 					widget = buildButton(frame, json);
 				}
 				else if(type.equals(WIDGET_TYPE_IMAGE)){
@@ -66,6 +77,9 @@ final class WidgetBuilder {
 				}
 				else if(type.equals(WIDGET_TYPE_PROGRESS_BAR)){
 					widget = buildProgressBar(frame, json);
+				}
+				else if(type.equals(WIDGET_TYPE_MINIMAP)){
+					widget = buildMinimap(frame, json);
 				}
 				
 				// Common widget fields
@@ -95,24 +109,24 @@ final class WidgetBuilder {
 			return null;
 		}
 	}
-	
-	private static Widget buildWidget(final Widget widget, final Frame frame, final JSONObject json, Script script) {
+
+	private static Widget buildWidget(final Widget widget, final Frame frame, final JSONObject json, final Script script) {
 		// External data loading
 		if(json.containsKey(TEXTURE_NORMAL)){
 			String path = (String)json.get(TEXTURE_NORMAL);
-			Resources.externalLoadTex(path);
+			Assets.loadTex(path);
 			widget.setTexNormal(path);
 		}
 		
 		if(json.containsKey(TEXTURE_SELECT)){
 			String path = (String)json.get(TEXTURE_SELECT);
-			Resources.externalLoadTex(path);
+			Assets.loadTex(path);
 			widget.setTexSelected(path);
 		}
 		
 		if(json.containsKey(TEXTURE_DISABLED)){
 			String path = (String)json.get(TEXTURE_DISABLED);
-			Resources.externalLoadTex(path);
+			Assets.loadTex(path);
 			widget.setTexDisabled(path);
 		}
 		
@@ -174,13 +188,29 @@ final class WidgetBuilder {
 		widget.onload();
 		return widget;
 	}
+	
+	private static Label buildLabel(final Frame frame, final JSONObject json) {
+		Label label = new Label(frame);
+		
+		if(json.containsKey(FONT)){
+			String path = (String)json.get(FONT);
+			Assets.loadFont(path);
+			label.setFont(path);
+		}
+		
+		if(json.containsKey(TEXT)){
+			label.setText((String)json.get(TEXT));
+		}
 
+		return label;
+	}
+	
 	private static Button buildButton(final Frame frame, final JSONObject json) {
 		Button button = new Button(frame);
 		
 		if(json.containsKey(FONT)){
 			String path = (String)json.get(FONT);
-			Resources.externalLoadFont(path);
+			Assets.loadFont(path);
 			button.setFont(path);
 		}
 		
@@ -208,5 +238,21 @@ final class WidgetBuilder {
 		}
 		
 		return bar;
+	}
+	
+	private static Widget buildMinimap(Frame frame, JSONObject json) {
+		Minimap map = new Minimap(frame);
+		
+		if(json.containsKey(MINIMAP_CENTRING)){
+			map.setCentring((Boolean)json.get(MINIMAP_CENTRING));
+		}
+		
+		if(json.containsKey(MINIMAP_CAMERA_FRAME)){
+			String path = (String)json.get(MINIMAP_CAMERA_FRAME);
+			Assets.loadTex(path);
+			map.setTexCameraFrame(path);
+		}
+		
+		return map;
 	}
 }
