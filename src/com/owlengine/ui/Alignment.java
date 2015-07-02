@@ -28,13 +28,13 @@ final class Alignment {
 		else if(value.equalsIgnoreCase("down_right")){
 			return DOWN_RIGHT;
 		}
-		else if(value.equalsIgnoreCase("center_left")){
+		else if(value.equalsIgnoreCase("center_left") || value.equalsIgnoreCase("left")){
 			return CENTER_LEFT;
 		}
 		else if(value.equalsIgnoreCase("center")){
 			return CENTER;
 		}
-		else if(value.equalsIgnoreCase("center_right")){
+		else if(value.equalsIgnoreCase("center_right") || value.equalsIgnoreCase("right")){
 			return CENTER_RIGHT;
 		}
 		else if(value.equalsIgnoreCase("up_left")){

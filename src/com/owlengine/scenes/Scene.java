@@ -30,16 +30,16 @@ public abstract class Scene implements Draw, Event, Disposable {
 	}
 	
 	// Receiving events
-	public final void uiEvent(final int code){
-		ui.event(code);
+	protected final boolean uiEvent(final int code){
+		return ui.event(code);
 	}
 	
-	public final void uiEvent(final int code, final int data){
-		ui.event(code, data);
+	protected final boolean uiEvent(final int code, final int data){
+		return ui.event(code, data);
 	}
 	
-	public final void uiEvent(final int code, final char data){
-		ui.event(code, data);
+	protected final boolean uiEvent(final int code, final char data){
+		return ui.event(code, data);
 	}
 	
 	@Override

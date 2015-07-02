@@ -15,7 +15,7 @@ import com.owlengine.interfaces.Draw;
 import com.owlengine.interfaces.Event;
 import com.owlengine.tools.Log;
 
-public final class UI implements Draw, Event {
+public final class UI implements Draw {
 	
 	// JSON type
 	private static final String JSON_CONTENT = "content";
@@ -120,6 +120,10 @@ public final class UI implements Draw, Event {
 		return widgetsTitle.get(title);
 	}
 	
+	public Frame getFrame(String title) {
+		return framesTitle.get(title);
+	}
+	
 	// Render
 	@Override
 	public void draw(final SpriteBatch batch) {
@@ -141,13 +145,17 @@ public final class UI implements Draw, Event {
 		}
 	}
 
-	private void updateSelecting() {
+	private boolean updateSelecting() {
 		if(activeFrame != null && activeFrame.visible() && activeFrame.inBound()){
 			selectedFrame = activeFrame;
 			selectedWidget = activeFrame.selectWidget();
 		
 			if(selectedWidget != null){
 				selectedWidget.setSelected(true);
+				return true;
+			}
+			else{
+				return false;
 			}
 		}
 		else{
@@ -167,105 +175,119 @@ public final class UI implements Draw, Event {
 					if(selectedWidget != null){
 						selectedWidget.setSelected(true);
 						selectedFrame = selectedWidget.parent();
-						break;
+						return true;
+					}
+					else{
+						return false;
 					}
 				}
+				else{
+					return false;
+				}
 			}
+			
+			return false;
 		}
 	}
 	
 	// User Input Events
-	private void mouseMove() {
-		updateSelecting();
+	private boolean mouseMove() {
+		return updateSelecting();
 	}
 
-	private void mouseDrag() {
+	private boolean mouseDrag() {
 		if(activeFrame != null && activeFrame.movable()){
-			activeFrame.drag();
+			return activeFrame.drag();
+		}
+		else{
+			return false;
 		}
 	}
 	
-	private void mouseAction() {
+	private boolean mouseAction() {
 		activeFrame = selectedFrame;
 		
 		if(activeFrame != null){
 			activeFrame.leftClick();
+			
+			if(selectedWidget != null){
+				selectedWidget.leftClick();
+			}
+			
+			return true;
 		}
-		
+		else{
+			return false;
+		}
+	}
+	
+	private boolean mouseActionSecond() {
 		if(selectedWidget != null){
-			selectedWidget.leftClick();
+			return selectedWidget.rightClick();
 		}
-	}
-	
-	private void mouseActionSecond() {
-		if(selectedWidget != null){
-			selectedWidget.rightClick();
+		else{
+			return false;
 		}
 	}
 
-	private void mouseScroll(int data) {
-		
+	private boolean mouseScroll(int data) {
+		return false;
 	}
 	
-	private void keyUp(int data) {
-
+	private boolean keyUp(int data) {
+		return false;
 	}
 
-	private void keyDown(int data) {
-
+	private boolean keyDown(int data) {
+		return false;
 	}
 
-	private void keyType(char data) {
-		
+	private boolean keyType(char data) {
+		return false;
 	}
 	
-	@Override
-	public void event(final int code) {
+	public boolean event(final int code) {
 		switch (code) {
 		
 			case Event.MOUSE_MOVE:
-				mouseMove();
-				break;
+				return mouseMove();
 			
 			case Event.MOUSE_DRAG:
-				mouseDrag();
-				break;
+				return mouseDrag();
 				
 			case Event.MOUSE_KEY_LEFT:
-				mouseAction();
-				break;
+				return mouseAction();
 				
 			case Event.MOUSE_KEY_RIGHT:
-				mouseActionSecond();
-				break;
+				return mouseActionSecond();
 		}
+		
+		return false;
 	}
 
-	@Override
-	public void event(final int code, final int data) {
+	public boolean event(final int code, final int data) {
 		switch (code) {
 		
-			case MOUSE_SCROLL:
-				mouseScroll(data);
-				break;
+			case Event.MOUSE_SCROLL:
+				return mouseScroll(data);
 				
-			case KEY_DOWN:
-				keyDown(data);
-				break;
+			case Event.KEY_DOWN:
+				return keyDown(data);
 				
-			case KEY_UP:
-				keyUp(data);
-				break;
+			case Event.KEY_UP:
+				return keyUp(data);
 		}
+		
+		return false;
 	}
 
-	@Override
-	public void event(final int code, final char data) {
+	public boolean event(final int code, final char data) {
 		switch (code) {
 		
-			case KEY_TYPE:
-				keyType(data);
-				break;
+			case Event.KEY_TYPE:
+				return keyType(data);
 		}
+		
+		return false;
 	}
 }

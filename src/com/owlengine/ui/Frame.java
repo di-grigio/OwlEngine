@@ -119,7 +119,7 @@ public final class Frame implements Draw {
 		this.frameClickedY = UserInput.mouseY() - this.y;
 	}
 	
-	protected void drag() {
+	protected boolean drag() {
 		// translate Frame and all contained elements
 		this.x -= this.x + this.frameClickedX - UserInput.dragX(); // this.x -= deltaX;
 		this.y -= this.y + this.frameClickedY - (Gdx.graphics.getHeight() - UserInput.dragY()); // this.y -= deltaY;
@@ -128,6 +128,8 @@ public final class Frame implements Draw {
 		for(int i = 0; i < layers.length; ++i){
 			layers[i].updatePosition();
 		}
+		
+		return true;
 	}
 	
 	private void updatePosition() {
@@ -208,7 +210,7 @@ public final class Frame implements Draw {
 	}
 	
 	protected Widget selectWidget() {
-		for(int i = layers.length - 1; i > 0; --i){ // reversed check
+		for(int i = layers.length - 1; i >= 0; --i){ // reversed check
 			Widget widget = layers[i].selectWidget();
 			
 			if(widget != null){

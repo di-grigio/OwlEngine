@@ -20,8 +20,12 @@ public final class Assets implements Disposable {
 	private static final String JSON_OBJECT_PATH = "path";
 	
 	// Font builder
-	private static final String RUSSIAN_CHARS = "àáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞß";
-	private static final int DEFAULT_FONT_SIZE = 14;
+	public static final String RUSSIAN_CHARS = "Ğ°Ğ±Ğ²Ğ³Ğ´ĞµĞ¶Ğ·Ğ¸Ğ¹ĞºĞ»Ğ¼Ğ½Ğ¾Ğ¿Ñ€ÑÑ‚ÑƒÑ„Ñ…Ñ†Ñ‡ÑˆÑ‰ÑŠÑ‹ÑŒÑÑÑĞĞ‘Ğ’Ğ“Ğ”Ğ•Ğ–Ğ—Ğ˜Ğ™ĞšĞ›ĞœĞĞĞŸĞ Ğ¡Ğ¢Ğ£Ğ¤Ğ¥Ğ¦Ğ§Ğ¨Ğ©ĞªĞ«Ğ¬Ğ­Ğ®Ğ¯";
+	public static final int DEFAULT_FONT_SIZE = 14;
+	public static final float DEFAULT_FONT_COLOR_R = 1.0f;
+	public static final float DEFAULT_FONT_COLOR_G = 1.0f;
+	public static final float DEFAULT_FONT_COLOR_B = 1.0f;
+	public static final float DEFAULT_FONT_COLOR_A = 1.0f;
 	
 	// Data
 	private static AssetManager manager;
@@ -92,7 +96,6 @@ public final class Assets implements Disposable {
 		param.size = size;
 		
 		BitmapFont font = generator.generateFont(param);
-		generator.dispose();
 		
 		return font;
 	}
@@ -100,7 +103,6 @@ public final class Assets implements Disposable {
 	public static BitmapFont getFont(String path, FreeTypeFontParameter param){
 		FreeTypeFontGenerator generator = manager.get(path, FreeTypeFontGenerator.class);
 		BitmapFont font = generator.generateFont(param);
-		generator.dispose();
 		
 		return font;
 	}

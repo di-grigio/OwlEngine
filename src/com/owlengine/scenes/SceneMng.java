@@ -69,24 +69,27 @@ public final class SceneMng implements Disposable, Event {
 	@Override
 	public void event(int code) {
 		if(current != null){
-			current.uiEvent(code);
-			current.event(code);
+			if(!current.uiEvent(code)){
+				current.event(code);
+			}
 		}
 	}
 
 	@Override
 	public void event(int code, int data) {
 		if(current != null){
-			current.uiEvent(code, data);
-			current.event(code, data);
+			if(!current.uiEvent(code, data)){
+				current.event(code, data);
+			}
 		}
 	}
 
 	@Override
 	public void event(int code, char data) {
 		if(current != null){
-			current.uiEvent(code, data);
-			current.event(code, data);
+			if(!current.uiEvent(code, data)){
+				current.event(code, data);	
+			}
 		}
 	}
 }

@@ -3,6 +3,8 @@ package com.owlengine.ui;
 import org.json.simple.JSONObject;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.owlengine.interfaces.Script;
 import com.owlengine.resources.Assets;
 import com.owlengine.tools.Log;
@@ -36,6 +38,7 @@ final class WidgetBuilder {
 	
 	// JSON Text
 	private static final String TEXT = "text";
+	private static final String TEXT_ALIGNMENT = "text_alignment";
 	private static final String FONT = "font";
 	
 	// JSON Events fields
@@ -50,6 +53,9 @@ final class WidgetBuilder {
 	private static final String WIDGET_TYPE_PROGRESS_BAR = "progress_bar";
 	private static final String WIDGET_TYPE_MINIMAP = "minimap";
 	
+	// JSON Button settings
+	private static final String BUTTON_HIGHLIGHTED = "highlighted";
+	
 	// JSON Progress Bar fieds
 	private static final String PROGRESS_BAR_VALUE = "value";
 	private static final String PROGRESS_BAR_MAX_VALUE = "max";
@@ -57,6 +63,13 @@ final class WidgetBuilder {
 	// JSON Minimap
 	private static final String MINIMAP_CENTRING = "centering";
 	private static final String MINIMAP_CAMERA_FRAME = "texture_camera_frame";
+	
+	// JSON Font 
+	private static final String FONT_COLOR_R = "font_color_r";
+	private static final String FONT_COLOR_G = "font_color_g";
+	private static final String FONT_COLOR_B = "font_color_b";
+	private static final String FONT_COLOR_A = "font_color_a";
+	private static final String FONT_COLOR_SIZE = "font_size";
 	
 	protected static Widget build(final Frame frame, final JSONObject json, final Script script) {
 		Widget widget = null;
@@ -192,10 +205,47 @@ final class WidgetBuilder {
 	private static Label buildLabel(final Frame frame, final JSONObject json) {
 		Label label = new Label(frame);
 		
+		FreeTypeFontParameter fontParam = new FreeTypeFontParameter();
+		
+		if(json.containsKey(FONT_COLOR_R)){
+			fontParam.color.r = ((Number)json.get(FONT_COLOR_R)).intValue();
+		}
+		else{
+			fontParam.color.r = Assets.DEFAULT_FONT_COLOR_R;
+		}
+		
+		if(json.containsKey(FONT_COLOR_G)){
+			fontParam.color.g = ((Number)json.get(FONT_COLOR_G)).intValue();
+		}
+		else{
+			fontParam.color.g = Assets.DEFAULT_FONT_COLOR_G;
+		}
+		
+		if(json.containsKey(FONT_COLOR_B)){
+			fontParam.color.b = ((Number)json.get(FONT_COLOR_B)).intValue();
+		}		
+		else{
+			fontParam.color.b = Assets.DEFAULT_FONT_COLOR_B;
+		}
+		
+		if(json.containsKey(FONT_COLOR_A)){
+			fontParam.color.a = ((Number)json.get(FONT_COLOR_A)).intValue();
+		}
+		else{
+			fontParam.color.a = Assets.DEFAULT_FONT_COLOR_A;
+		}
+		
+		if(json.containsKey(FONT_COLOR_SIZE)){
+			fontParam.size = ((Number)json.get(FONT_COLOR_SIZE)).intValue();
+		}
+		else{
+			fontParam.size = Assets.DEFAULT_FONT_SIZE;
+		}
+		
 		if(json.containsKey(FONT)){
 			String path = (String)json.get(FONT);
 			Assets.loadFont(path);
-			label.setFont(path);
+			label.setFont(path, fontParam);
 		}
 		
 		if(json.containsKey(TEXT)){
@@ -214,8 +264,26 @@ final class WidgetBuilder {
 			button.setFont(path);
 		}
 		
+		if(json.containsKey(TEXT_ALIGNMENT)){
+			String ali = (String)json.get(TEXT_ALIGNMENT);
+			
+			if(ali.equals("center")){
+				button.setTextAlignement(HAlignment.CENTER);
+			}
+			else if(ali.equals("left")){
+				button.setTextAlignement(HAlignment.LEFT);
+			}
+			else if(ali.equals("right")){
+				button.setTextAlignement(HAlignment.RIGHT);
+			}
+		}
+		
 		if(json.containsKey(TEXT)){
 			button.setText((String)json.get(TEXT));
+		}
+		
+		if(json.containsKey(BUTTON_HIGHLIGHTED)){
+			button.setHighlighted((Boolean)json.get(BUTTON_HIGHLIGHTED));
 		}
 
 		return button;

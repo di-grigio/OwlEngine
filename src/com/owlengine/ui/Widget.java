@@ -2,6 +2,7 @@ package com.owlengine.ui;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.owlengine.input.UserInput;
 import com.owlengine.interfaces.Draw;
 import com.owlengine.interfaces.Script;
@@ -41,6 +42,10 @@ abstract public class Widget implements Draw {
 	
 	// scripts methods
 	private Script script;
+	private Script scriptOnLoad;
+	private Script scriptOnAction;
+	private Script scriptOnActionSecond;
+	
 	private String eventOnLoad;
 	private String eventOnAction;
 	private String eventOnActionSecond;
@@ -162,7 +167,7 @@ abstract public class Widget implements Draw {
 		return visible;
 	}
 
-	protected final void setVisibible(final boolean visible) {
+	public final void setVisibible(final boolean visible) {
 		this.visible = visible;
 	}
 	
@@ -185,6 +190,18 @@ abstract public class Widget implements Draw {
 	}
 	
 	// Events
+	public final void setScriptOnLoad(final Script script){
+		this.scriptOnLoad = script;
+	}
+	
+	public final void setScriptOnAction(final Script script){
+		this.scriptOnAction = script;
+	}
+	
+	public final void setScriptOnActionSecond(final Script script){
+		this.scriptOnActionSecond = script;
+	}
+	
 	protected final void setScript(final Script script){
 		this.script = script;
 	}
@@ -218,22 +235,39 @@ abstract public class Widget implements Draw {
 		if(script != null && eventOnLoad != null){
 			script.execute(eventOnLoad);
 		}
+		else{
+			if(scriptOnLoad != null){
+				scriptOnLoad.execute();
+			}
+		}
 	}
 	
 	protected final void leftClick() {
 		if(script != null && eventOnAction != null){
 			script.execute(eventOnAction);
 		}
+		else{
+			if(scriptOnAction != null){
+				scriptOnAction.execute();
+			}
+		}
 	}
 
-	protected final void rightClick() {
+	protected final boolean rightClick() {
 		if(script != null && eventOnActionSecond != null){
 			script.execute(eventOnActionSecond);
 		}
+		else{
+			if(scriptOnActionSecond != null){
+				scriptOnActionSecond.execute();
+			}
+		}
+		
+		return true;
 	}
 	
 	// Graphics
-	protected final void setTexNormal(final String key) {
+	public final void setTexNormal(final String key) {
 		this.texNormal = Assets.getTex(key);
 	}
 	
@@ -241,7 +275,7 @@ abstract public class Widget implements Draw {
 		this.texNormal = tex;
 	}
 	
-	protected final void setTexSelected(final String key){
+	public final void setTexSelected(final String key){
 		this.texSelected = Assets.getTex(key);
 	}
 
@@ -251,5 +285,9 @@ abstract public class Widget implements Draw {
 	
 	protected final void setFont(final String key){
 		this.font = Assets.getFont(key);
+	}
+
+	public void setFont(String path, FreeTypeFontParameter fontParam) {
+		this.font = Assets.getFont(path, fontParam);
 	}
 }
