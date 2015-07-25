@@ -39,7 +39,10 @@ final class WidgetBuilder {
 	// JSON Text
 	private static final String TEXT = "text";
 	private static final String TEXT_ALIGNMENT = "text_alignment";
-	private static final String FONT = "font";
+
+	private static final String TEXT_ALIGNMENT_CENTER = "center";
+	private static final String TEXT_ALIGNMENT_LEFT = "left";
+	private static final String TEXT_ALIGNMENT_RIGHT = "right";
 	
 	// JSON Events fields
 	private static final String EVENT_ONLOAD = "on_load";
@@ -64,7 +67,8 @@ final class WidgetBuilder {
 	private static final String MINIMAP_CENTRING = "centering";
 	private static final String MINIMAP_CAMERA_FRAME = "texture_camera_frame";
 	
-	// JSON Font 
+	// JSON Font
+	private static final String FONT = "font";
 	private static final String FONT_COLOR_R = "font_color_r";
 	private static final String FONT_COLOR_G = "font_color_g";
 	private static final String FONT_COLOR_B = "font_color_b";
@@ -251,6 +255,20 @@ final class WidgetBuilder {
 		if(json.containsKey(TEXT)){
 			label.setText((String)json.get(TEXT));
 		}
+		
+		if(json.containsKey(TEXT_ALIGNMENT)){
+			String alignment = (String)json.get(TEXT_ALIGNMENT);
+			
+			if(alignment.equalsIgnoreCase(TEXT_ALIGNMENT_CENTER)){
+				label.setTextAlignement(HAlignment.CENTER);
+			}
+			else if(alignment.equalsIgnoreCase(TEXT_ALIGNMENT_LEFT)){
+				label.setTextAlignement(HAlignment.LEFT);
+			}
+			else if(alignment.equalsIgnoreCase(TEXT_ALIGNMENT_RIGHT)){
+				label.setTextAlignement(HAlignment.RIGHT);
+			}
+		}
 
 		return label;
 	}
@@ -264,22 +282,22 @@ final class WidgetBuilder {
 			button.setFont(path);
 		}
 		
-		if(json.containsKey(TEXT_ALIGNMENT)){
-			String ali = (String)json.get(TEXT_ALIGNMENT);
-			
-			if(ali.equals("center")){
-				button.setTextAlignement(HAlignment.CENTER);
-			}
-			else if(ali.equals("left")){
-				button.setTextAlignement(HAlignment.LEFT);
-			}
-			else if(ali.equals("right")){
-				button.setTextAlignement(HAlignment.RIGHT);
-			}
-		}
-		
 		if(json.containsKey(TEXT)){
 			button.setText((String)json.get(TEXT));
+		}
+		
+		if(json.containsKey(TEXT_ALIGNMENT)){
+			String alignment = (String)json.get(TEXT_ALIGNMENT);
+			
+			if(alignment.equalsIgnoreCase(TEXT_ALIGNMENT_CENTER)){
+				button.setTextAlignement(HAlignment.CENTER);
+			}
+			else if(alignment.equalsIgnoreCase(TEXT_ALIGNMENT_LEFT)){
+				button.setTextAlignement(HAlignment.LEFT);
+			}
+			else if(alignment.equalsIgnoreCase(TEXT_ALIGNMENT_RIGHT)){
+				button.setTextAlignement(HAlignment.RIGHT);
+			}
 		}
 		
 		if(json.containsKey(BUTTON_HIGHLIGHTED)){

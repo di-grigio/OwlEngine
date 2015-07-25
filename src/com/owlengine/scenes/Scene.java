@@ -3,11 +3,10 @@ package com.owlengine.scenes;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
-import com.owlengine.interfaces.Draw;
 import com.owlengine.interfaces.Event;
 import com.owlengine.ui.UI;
 
-public abstract class Scene implements Draw, Event, Disposable {
+public abstract class Scene implements Event, Disposable {
 
 	private UI ui;
 	
@@ -19,29 +18,29 @@ public abstract class Scene implements Draw, Event, Disposable {
 		this.ui = new UI(jsonFile);
 	}
 	
-	public UI getUI() {
+	protected UI getUI() {
 		return ui;
 	}
 	
-	public final void drawUI(final SpriteBatch batch){
+	protected final void drawUI(final SpriteBatch batch){
 		if(ui != null){
 			ui.draw(batch);
 		}
 	}
 	
+	public boolean widgetSelected() {
+		return ui.selected();
+	}
+	
+	protected void update(OrthographicCamera camera) {}
+	
+	protected void draw(SpriteBatch batch) {}
+	
+	protected void drawHUD(SpriteBatch batch) {}
+	
+	protected void postUpdate() {};
+	
 	// Receiving events
-	protected final boolean uiEvent(final int code){
-		return ui.event(code);
-	}
-	
-	protected final boolean uiEvent(final int code, final int data){
-		return ui.event(code, data);
-	}
-	
-	protected final boolean uiEvent(final int code, final char data){
-		return ui.event(code, data);
-	}
-	
 	@Override
 	public void event(final int code) {}
 	
@@ -51,6 +50,19 @@ public abstract class Scene implements Draw, Event, Disposable {
 	@Override
 	public void event(final int code, final char data) {}
 	
-	abstract public void drawHUD(SpriteBatch batch);
-	abstract public void update(OrthographicCamera camera);
+	@Override
+	public void dispose() {}
+	
+	// UI events
+	protected final void uiEvent(final int code){
+		ui.event(code);
+	}
+	
+	protected final void uiEvent(final int code, final int data){
+		ui.event(code, data);
+	}
+	
+	protected final void uiEvent(final int code, final char data){
+		ui.event(code, data);
+	}
 }

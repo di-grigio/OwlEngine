@@ -59,6 +59,12 @@ public final class SceneMng implements Disposable, Event {
 		}
 	}
 
+	public void postUpdate(){
+		if(current != null){
+			current.postUpdate();
+		}
+	}
+	
 	@Override
 	public void dispose() {
 		if(current != null){
@@ -69,7 +75,9 @@ public final class SceneMng implements Disposable, Event {
 	@Override
 	public void event(int code) {
 		if(current != null){
-			if(!current.uiEvent(code)){
+			current.uiEvent(code);
+			
+			if(!current.widgetSelected()){
 				current.event(code);
 			}
 		}
@@ -78,7 +86,9 @@ public final class SceneMng implements Disposable, Event {
 	@Override
 	public void event(int code, int data) {
 		if(current != null){
-			if(!current.uiEvent(code, data)){
+			current.uiEvent(code, data);
+			
+			if(!current.widgetSelected()){
 				current.event(code, data);
 			}
 		}
@@ -87,8 +97,10 @@ public final class SceneMng implements Disposable, Event {
 	@Override
 	public void event(int code, char data) {
 		if(current != null){
-			if(!current.uiEvent(code, data)){
-				current.event(code, data);	
+			current.uiEvent(code, data);
+			
+			if(!current.widgetSelected()){
+				current.event(code, data);
 			}
 		}
 	}

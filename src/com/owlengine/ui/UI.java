@@ -15,30 +15,30 @@ import com.owlengine.interfaces.Draw;
 import com.owlengine.interfaces.Event;
 import com.owlengine.tools.Log;
 
-public final class UI implements Draw {
+public final class UI implements Draw, Event {
 	
 	// JSON type
 	private static final String JSON_CONTENT = "content";
 	private static final String JSON_TYPE_FRAME = "frame";
-	//private static final String JSON_TYPE_TEXTURE = "texture";
-	//private static final String JSON_TYPE_FONT = "font";
 	
-	// data
+	// UI Elements
 	private HashMap<Integer, Frame>  framesId;
-	private HashMap<String, Frame> framesTitle;
+	private HashMap<String, Frame>   framesTitle;
 	private HashMap<Integer, Widget> widgetsId;
 	private HashMap<String, Widget>  widgetsTitle;
 	
-	// active
-	private Frame activeFrame;
-	private Frame selectedFrame;
-	private Widget selectedWidget;
+	// UI Events
+	private UIState state;
 	
 	public UI() {
+		// UI Elements
 		framesId = new HashMap<Integer, Frame>();
 		framesTitle = new HashMap<String, Frame>();
 		widgetsId = new HashMap<Integer, Widget>();
 		widgetsTitle = new HashMap<String, Widget>();
+		
+		// UI Events
+		state = new UIState();
 	}
 	
 	public UI(String jsonFile) {
@@ -89,24 +89,16 @@ public final class UI implements Draw {
 				if(type.equalsIgnoreCase(JSON_TYPE_FRAME)){
 					addFrame(new Frame(this, element));		
 				}
-				
-				/*
-				else if(type.equalsIgnoreCase(JSON_TYPE_FONT)){
-					Assets.jsonLoadFont(element);
-				}
-				else if(type.equalsIgnoreCase(JSON_TYPE_TEXTURE)){
-					Assets.jsonLoadTex(element);
-				}
-				*/
 			}
 		}
 	}
 	
-	protected void addFrame(final Frame frame) {
+	private void addFrame(final Frame frame) {
 		framesId.put(frame.id(), frame);
 		framesTitle.put(frame.title(), frame);
 	}
-
+	
+	// Widgets management
 	protected void registerWidget(Widget widget) {
 		widgetsId.put(widget.id(), widget);
 		
@@ -116,6 +108,10 @@ public final class UI implements Draw {
 	}
 	
 	// Access to elements
+	public boolean selected() {
+		return state.selected();
+	}
+	
 	public Widget getWidget(String title) {
 		return widgetsTitle.get(title);
 	}
@@ -127,167 +123,177 @@ public final class UI implements Draw {
 	// Render
 	@Override
 	public void draw(final SpriteBatch batch) {
-		if(activeFrame == null){
-			for(Frame frame: framesId.values()){	
-				frame.draw(batch);
-			}
-		}
-		else{
-			for(Frame frame: framesId.values()){
-				 if(activeFrame.id() != frame.id()){
-					 frame.draw(batch);
-				 }
-			}
-			
-			if(activeFrame != null){
-				activeFrame.draw(batch);
-			}
-		}
+		state.draw(batch);
 	}
 
-	private boolean updateSelecting() {
-		if(activeFrame != null && activeFrame.visible() && activeFrame.inBound()){
-			selectedFrame = activeFrame;
-			selectedWidget = activeFrame.selectWidget();
+	@Override
+	public void event(final int code) {
+		switch (code) {
 		
-			if(selectedWidget != null){
-				selectedWidget.setSelected(true);
+			case Event.MOUSE_MOVE:
+				state.mouseMove();
+				break;
+			
+			case Event.MOUSE_DRAG:
+				state.mouseDrag();
+				break;
+				
+			case Event.MOUSE_KEY_LEFT:
+				state.mouseAction();
+				break;
+				
+			case Event.MOUSE_KEY_RIGHT:
+				state.mouseActionSecond();
+				break;
+		}
+	}
+	
+	@Override
+	public void event(final int code, final int data) {
+		switch (code) {
+		
+			case Event.MOUSE_SCROLL:
+				state.mouseScroll(data);
+				break;
+				
+			case Event.KEY_DOWN:
+				state.keyDown(data);
+				break;
+				
+			case Event.KEY_UP:
+				state.keyUp(data);
+				break;
+		}
+	}
+	
+	@Override	
+	public void event(final int code, final char data) {
+		switch (code) {
+		
+			case Event.KEY_TYPE:
+				state.keyType(data);
+				break;
+		}
+	}
+	
+	private final class UIState implements Draw {
+
+		private Frame activeFrame;
+		private Frame selectedFrame;
+		
+		private Widget selectedWidget;
+
+		public boolean selected() {
+			return selectedWidget != null;
+		}
+		
+		@Override
+		public void draw(SpriteBatch batch) {
+			if(activeFrame == null){
+				for(Frame frame: framesId.values()){	
+					frame.draw(batch);
+				}
+			}
+			else{
+				for(Frame frame: framesId.values()){
+					 if(activeFrame.id() != frame.id()){
+						 frame.draw(batch);
+					 }
+				}
+				
+				if(activeFrame != null){
+					activeFrame.draw(batch);
+				}
+			}
+		}
+
+		private void updateSelecting() {
+			if(activeFrame != null && activeFrame.visible() && activeFrame.inBound()){
+				selectedFrame = activeFrame;
+				selectedWidget = activeFrame.selectWidget();
+			
+				if(selectedWidget != null){
+					selectedWidget.setSelected(true);
+				}
+			}
+			else{
+				// reset selecting
+				selectedFrame = null;
+				if(selectedWidget != null){
+					selectedWidget.setSelected(false);
+					selectedWidget = null;
+				}
+			
+				// search new selecting widget
+				for(Frame frame: framesId.values()){
+					if(frame.visible() && frame.inBound()){
+						selectedFrame = frame;
+						selectedWidget = frame.selectWidget();
+					
+						if(selectedWidget != null){
+							selectedWidget.setSelected(true);
+							selectedFrame = selectedWidget.parent();						
+						}
+					}
+				}
+			}
+		}
+		
+		// User Input Events
+		private boolean mouseScroll(int data) {
+			return false;
+		}
+		
+		private boolean keyUp(int data) {
+			return false;
+		}
+
+		private boolean keyDown(int data) {
+			return false;
+		}
+
+		private boolean keyType(char data) {
+			return false;
+		}
+		
+		// Events
+		private void mouseMove() {
+			updateSelecting();
+		}
+
+		private boolean mouseDrag() {
+			if(activeFrame != null && activeFrame.movable()){
+				return activeFrame.drag();
+			}
+			else{
+				return false;
+			}
+		}
+		
+		private boolean mouseAction() {
+			activeFrame = selectedFrame;
+			
+			if(activeFrame != null){
+				activeFrame.leftClick();
+				
+				if(selectedWidget != null){
+					selectedWidget.leftClick();
+				}
+				
 				return true;
 			}
 			else{
 				return false;
 			}
 		}
-		else{
-			// reset selecting
-			selectedFrame = null;
+		
+		private boolean mouseActionSecond() {
 			if(selectedWidget != null){
-				selectedWidget.setSelected(false);
-				selectedWidget = null;
+				return selectedWidget.rightClick();
 			}
-		
-			// search new selecting widget
-			for(Frame frame: framesId.values()){
-				if(frame.visible() && frame.inBound()){
-					selectedFrame = frame;
-					selectedWidget = frame.selectWidget();
-				
-					if(selectedWidget != null){
-						selectedWidget.setSelected(true);
-						selectedFrame = selectedWidget.parent();
-						return true;
-					}
-					else{
-						return false;
-					}
-				}
-				else{
-					return false;
-				}
+			else{
+				return false;
 			}
-			
-			return false;
 		}
-	}
-	
-	// User Input Events
-	private boolean mouseMove() {
-		return updateSelecting();
-	}
-
-	private boolean mouseDrag() {
-		if(activeFrame != null && activeFrame.movable()){
-			return activeFrame.drag();
-		}
-		else{
-			return false;
-		}
-	}
-	
-	private boolean mouseAction() {
-		activeFrame = selectedFrame;
-		
-		if(activeFrame != null){
-			activeFrame.leftClick();
-			
-			if(selectedWidget != null){
-				selectedWidget.leftClick();
-			}
-			
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
-	
-	private boolean mouseActionSecond() {
-		if(selectedWidget != null){
-			return selectedWidget.rightClick();
-		}
-		else{
-			return false;
-		}
-	}
-
-	private boolean mouseScroll(int data) {
-		return false;
-	}
-	
-	private boolean keyUp(int data) {
-		return false;
-	}
-
-	private boolean keyDown(int data) {
-		return false;
-	}
-
-	private boolean keyType(char data) {
-		return false;
-	}
-	
-	public boolean event(final int code) {
-		switch (code) {
-		
-			case Event.MOUSE_MOVE:
-				return mouseMove();
-			
-			case Event.MOUSE_DRAG:
-				return mouseDrag();
-				
-			case Event.MOUSE_KEY_LEFT:
-				return mouseAction();
-				
-			case Event.MOUSE_KEY_RIGHT:
-				return mouseActionSecond();
-		}
-		
-		return false;
-	}
-
-	public boolean event(final int code, final int data) {
-		switch (code) {
-		
-			case Event.MOUSE_SCROLL:
-				return mouseScroll(data);
-				
-			case Event.KEY_DOWN:
-				return keyDown(data);
-				
-			case Event.KEY_UP:
-				return keyUp(data);
-		}
-		
-		return false;
-	}
-
-	public boolean event(final int code, final char data) {
-		switch (code) {
-		
-			case Event.KEY_TYPE:
-				return keyType(data);
-		}
-		
-		return false;
 	}
 }
