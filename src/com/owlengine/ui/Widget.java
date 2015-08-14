@@ -253,7 +253,7 @@ abstract public class Widget implements Draw {
 		}
 	}
 
-	protected final boolean rightClick() {
+	protected final void rightClick() {
 		if(script != null && eventOnActionSecond != null){
 			script.execute(eventOnActionSecond);
 		}
@@ -262,8 +262,6 @@ abstract public class Widget implements Draw {
 				scriptOnActionSecond.execute();
 			}
 		}
-		
-		return true;
 	}
 	
 	// Graphics

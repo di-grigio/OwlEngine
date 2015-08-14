@@ -9,6 +9,7 @@ import com.owlengine.interfaces.Script;
 import com.owlengine.resources.Assets;
 import com.owlengine.tools.Log;
 import com.owlengine.ui.widgets.Button;
+import com.owlengine.ui.widgets.Checkbox;
 import com.owlengine.ui.widgets.Image;
 import com.owlengine.ui.widgets.Label;
 import com.owlengine.ui.widgets.Minimap;
@@ -55,6 +56,7 @@ final class WidgetBuilder {
 	private static final String WIDGET_TYPE_IMAGE = "image";
 	private static final String WIDGET_TYPE_PROGRESS_BAR = "progress_bar";
 	private static final String WIDGET_TYPE_MINIMAP = "minimap";
+	private static final String WIDGET_TYPE_CHECKBOX = "checkbox";
 	
 	// JSON Button settings
 	private static final String BUTTON_HIGHLIGHTED = "highlighted";
@@ -74,6 +76,11 @@ final class WidgetBuilder {
 	private static final String FONT_COLOR_B = "font_color_b";
 	private static final String FONT_COLOR_A = "font_color_a";
 	private static final String FONT_COLOR_SIZE = "font_size";
+	
+	// JSON Checkbox
+	private static final String CHECKBOX_TEXTURE_CHECK_NORMAL = "texture_check_normal";
+	private static final String CHECKBOX_TEXTURE_CHECK_SELECTED = "texture_check_selected";
+	private static final String CHECKBOX_DEFAULT_VALUE = "value";
 	
 	protected static Widget build(final Frame frame, final JSONObject json, final Script script) {
 		Widget widget = null;
@@ -97,6 +104,9 @@ final class WidgetBuilder {
 				}
 				else if(type.equals(WIDGET_TYPE_MINIMAP)){
 					widget = buildMinimap(frame, json);
+				}
+				else if(type.equals(WIDGET_TYPE_CHECKBOX)){
+					widget = buildCheckbox(frame, json);
 				}
 				
 				// Common widget fields
@@ -340,5 +350,28 @@ final class WidgetBuilder {
 		}
 		
 		return map;
+	}
+	
+
+	private static Widget buildCheckbox(Frame frame, JSONObject json) {
+		Checkbox checkbox = new Checkbox(frame);
+		
+		if(json.containsKey(CHECKBOX_TEXTURE_CHECK_NORMAL)){
+			String path = (String)json.get(CHECKBOX_TEXTURE_CHECK_NORMAL);
+			Assets.loadTex(path);
+			checkbox.setTexValueNormal(path);
+		}
+		
+		if(json.containsKey(CHECKBOX_TEXTURE_CHECK_SELECTED)){
+			String path = (String)json.get(CHECKBOX_TEXTURE_CHECK_SELECTED);
+			Assets.loadTex(path);
+			checkbox.setTexValueSelected(path);
+		}
+		
+		if(json.containsKey(CHECKBOX_DEFAULT_VALUE)){
+			checkbox.setValue((Boolean)json.get(CHECKBOX_DEFAULT_VALUE));
+		}
+		
+		return checkbox;
 	}
 }

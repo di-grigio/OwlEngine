@@ -219,6 +219,7 @@ public final class UI implements Draw, Event {
 			else{
 				// reset selecting
 				selectedFrame = null;
+				
 				if(selectedWidget != null){
 					selectedWidget.setSelected(false);
 					selectedWidget = null;
@@ -240,37 +241,26 @@ public final class UI implements Draw, Event {
 		}
 		
 		// User Input Events
-		private boolean mouseScroll(int data) {
-			return false;
-		}
+		private void mouseScroll(int data) { }
 		
-		private boolean keyUp(int data) {
-			return false;
-		}
+		private void keyUp(int data) { }
 
-		private boolean keyDown(int data) {
-			return false;
-		}
+		private void keyDown(int data) { }
 
-		private boolean keyType(char data) {
-			return false;
-		}
+		private void keyType(char data) { }
 		
 		// Events
 		private void mouseMove() {
 			updateSelecting();
 		}
 
-		private boolean mouseDrag() {
+		private void mouseDrag() {
 			if(activeFrame != null && activeFrame.movable()){
-				return activeFrame.drag();
-			}
-			else{
-				return false;
+				activeFrame.drag();
 			}
 		}
 		
-		private boolean mouseAction() {
+		private void mouseAction() {
 			activeFrame = selectedFrame;
 			
 			if(activeFrame != null){
@@ -279,20 +269,12 @@ public final class UI implements Draw, Event {
 				if(selectedWidget != null){
 					selectedWidget.leftClick();
 				}
-				
-				return true;
-			}
-			else{
-				return false;
 			}
 		}
 		
-		private boolean mouseActionSecond() {
+		private void mouseActionSecond() {
 			if(selectedWidget != null){
-				return selectedWidget.rightClick();
-			}
-			else{
-				return false;
+				selectedWidget.rightClick();
 			}
 		}
 	}
