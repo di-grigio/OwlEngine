@@ -5,7 +5,6 @@ import org.json.simple.JSONObject;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.owlengine.interfaces.Draw;
-import com.owlengine.interfaces.Script;
 import com.owlengine.tools.Log;
 
 public final class FrameLayer implements Draw {
@@ -13,13 +12,13 @@ public final class FrameLayer implements Draw {
 	// data
 	private Widget [] widgets;
 	
-	public void build(final Frame frame, final UI ui, final JSONArray data, final Script script) {
+	public void build(final Frame frame, final UI ui, final JSONArray data) {
 		try {
 			widgets = new Widget[data.size()];
 			
 			// build process
 			for(int i = 0; i < data.size(); ++i){
-				widgets[i] = WidgetBuilder.build(frame, (JSONObject)data.get(i), script);
+				widgets[i] = WidgetBuilder.build(frame, (JSONObject)data.get(i));
 				ui.registerWidget(widgets[i]);
 			}
 		}

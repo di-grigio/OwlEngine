@@ -17,7 +17,7 @@ public final class LuaEngine {
 		LuaEngine.lib = lib;
 	}
 	
-	public static LuaScript load(final String path){
+	public static LuaScript load(final String path, final String method){
 		if(path != null){
 			File file = new File(path);
 			
@@ -25,7 +25,7 @@ public final class LuaEngine {
 				try {
 		    		LuaValue globals = lib.getGlobals(scenes);
 					globals.get("dofile").call(LuaValue.valueOf(path));
-					return new LuaScript(globals);
+					return new LuaScript(globals, method);
 		    	}
 		    	catch (LuaError e){  
 		    		e.printStackTrace();

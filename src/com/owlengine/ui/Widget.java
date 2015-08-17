@@ -41,14 +41,9 @@ abstract public class Widget implements Draw {
 	protected boolean selected;
 	
 	// scripts methods
-	private Script script;
 	private Script scriptOnLoad;
 	private Script scriptOnAction;
 	private Script scriptOnActionSecond;
-	
-	private String eventOnLoad;
-	private String eventOnAction;
-	private String eventOnActionSecond;
 	
 	public Widget(Frame frame) {
 		this.id = ++ID;
@@ -202,65 +197,46 @@ abstract public class Widget implements Draw {
 		this.scriptOnActionSecond = script;
 	}
 	
-	protected final void setScript(final Script script){
-		this.script = script;
+	protected final Script eventOnLoad(){
+		return scriptOnLoad;
 	}
 	
-	protected final String eventOnLoad(){
-		return eventOnLoad;
-	}
-	
-	protected final void setEventOnLoad(final String string) {
-		this.eventOnLoad = string;
+	protected final void setEventOnLoad(final Script script) {
+		this.scriptOnLoad = script;
 	}
 
-	protected final String eventOnAction(){
-		return eventOnAction;
+	protected final Script eventOnAction(){
+		return scriptOnAction;
 	}
 	
-	protected final void setEventAction(final String string) {
-		this.eventOnAction = string;
+	protected final void setEventAction(final Script script) {
+		this.scriptOnAction = script;
 	}
 	
-	protected final String eventOnActionSecond(){
-		return eventOnActionSecond;
+	protected final Script eventOnActionSecond(){
+		return scriptOnActionSecond;
 	}
 	
-	protected final void setEventActionSecond(final String string){
-		this.eventOnActionSecond = string;
+	protected final void setEventActionSecond(final Script script){
+		this.scriptOnActionSecond = script;
 	}
 
 	// Script executing
 	protected final void onload(){
-		if(script != null && eventOnLoad != null){
-			script.execute(eventOnLoad);
-		}
-		else{
-			if(scriptOnLoad != null){
-				scriptOnLoad.execute();
-			}
+		if(scriptOnLoad != null){
+			scriptOnLoad.execute();
 		}
 	}
 	
 	protected final void leftClick() {
-		if(script != null && eventOnAction != null){
-			script.execute(eventOnAction);
-		}
-		else{
-			if(scriptOnAction != null){
-				scriptOnAction.execute();
-			}
+		if(scriptOnAction != null){
+			scriptOnAction.execute();
 		}
 	}
 
 	protected final void rightClick() {
-		if(script != null && eventOnActionSecond != null){
-			script.execute(eventOnActionSecond);
-		}
-		else{
-			if(scriptOnActionSecond != null){
-				scriptOnActionSecond.execute();
-			}
+		if(scriptOnActionSecond != null){
+			scriptOnActionSecond.execute();
 		}
 	}
 	

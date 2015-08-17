@@ -4,23 +4,19 @@ import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 
 import com.owlengine.interfaces.Script;
-import com.owlengine.tools.Log;
 
 public final class LuaScript implements Script {
 	
 	private LuaValue globals;
+	private String method;
 
-	public LuaScript(final LuaValue globals) {
+	public LuaScript(final LuaValue globals, final String method) {
 		this.globals = globals;
 	}
 	
 	@Override
 	public void execute() {
-		Log.err("(Warning) Calling void Lua script");
-	}
-	
-	public void execute(final String method){
-	    try {
+		try {
 	    	if(!globals.get(method).isnil()){
 	    		globals.get(method).call();
 	    	}

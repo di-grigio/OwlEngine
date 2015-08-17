@@ -5,7 +5,7 @@ import org.json.simple.JSONObject;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.owlengine.interfaces.Script;
+import com.owlengine.lua.LuaEngine;
 import com.owlengine.resources.Assets;
 import com.owlengine.tools.Log;
 import com.owlengine.ui.widgets.Button;
@@ -46,6 +46,7 @@ final class WidgetBuilder {
 	private static final String TEXT_ALIGNMENT_RIGHT = "right";
 	
 	// JSON Events fields
+	private static final String EVENT_LUA_SCRIPT_FILE = "lua_script";
 	private static final String EVENT_ONLOAD = "on_load";
 	private static final String EVENT_ACTION = "on_action";
 	private static final String EVENT_ACTION_SECOND = "on_action_second";
@@ -82,7 +83,7 @@ final class WidgetBuilder {
 	private static final String CHECKBOX_TEXTURE_CHECK_SELECTED = "texture_check_selected";
 	private static final String CHECKBOX_DEFAULT_VALUE = "value";
 	
-	protected static Widget build(final Frame frame, final JSONObject json, final Script script) {
+	protected static Widget build(final Frame frame, final JSONObject json) {
 		Widget widget = null;
 		
 		if(json.containsKey(CONTENT)){
@@ -111,7 +112,7 @@ final class WidgetBuilder {
 				
 				// Common widget fields
 				if(widget != null){
-					return buildWidget(widget, frame, json, script);
+					return buildWidget(widget, frame, json);
 				}
 				else{
 					Log.err("Error #7: JSON parse error - Unknown widget 'type'");
@@ -137,7 +138,7 @@ final class WidgetBuilder {
 		}
 	}
 
-	private static Widget buildWidget(final Widget widget, final Frame frame, final JSONObject json, final Script script) {
+	private static Widget buildWidget(final Widget widget, final Frame frame, final JSONObject json) {
 		// External data loading
 		if(json.containsKey(TEXTURE_NORMAL)){
 			String path = (String)json.get(TEXTURE_NORMAL);
@@ -158,21 +159,21 @@ final class WidgetBuilder {
 		}
 		
 		// Events
-		if(script != null){
-			widget.setScript(script);
+		if(json.containsKey(EVENT_LUA_SCRIPT_FILE)){
+			final String scirptFilePath = (String)json.get(EVENT_LUA_SCRIPT_FILE);
+
+			if(json.containsKey(EVENT_ONLOAD)){
+				widget.setEventOnLoad(LuaEngine.load(scirptFilePath, (String)json.get(EVENT_ONLOAD)));
+			}
+			
+			if(json.containsKey(EVENT_ACTION)){
+				widget.setEventAction(LuaEngine.load(scirptFilePath, (String)json.get(EVENT_ACTION)));
+			}
+			
+			if(json.containsKey(EVENT_ACTION_SECOND)){
+				widget.setEventActionSecond(LuaEngine.load(scirptFilePath, (String)json.get(EVENT_ACTION_SECOND)));
+			}	
 		}
-		
-		if(json.containsKey(EVENT_ONLOAD)){
-			widget.setEventOnLoad((String)json.get(EVENT_ONLOAD));
-		}
-		
-		if(json.containsKey(EVENT_ACTION)){
-			widget.setEventAction((String)json.get(EVENT_ACTION));
-		}
-		
-		if(json.containsKey(EVENT_ACTION_SECOND)){
-			widget.setEventActionSecond((String)json.get(EVENT_ACTION_SECOND));
-		}	
 		
 		// Another widget data
 		if(json.containsKey(TITLE)){

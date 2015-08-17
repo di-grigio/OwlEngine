@@ -20,10 +20,9 @@ public class Checkbox extends Button {
 		setScriptOnAction(new Script() {
 			
 			@Override
-			public void execute(String key) { }
-			
-			@Override
-			public void execute() { switchValue(); }
+			public void execute() { 
+				switchValue();
+			}
 		});
 	}
 	

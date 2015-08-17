@@ -7,8 +7,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.owlengine.input.UserInput;
 import com.owlengine.interfaces.Draw;
-import com.owlengine.interfaces.Script;
-import com.owlengine.lua.LuaEngine;
 import com.owlengine.tools.Log;
 
 public final class Frame implements Draw {
@@ -23,7 +21,6 @@ public final class Frame implements Draw {
 	
 	// JSON Fields
 	private static final String JSON_TITLE = "title";
-	private static final String JSON_LUA_SCRIPT = "lua_script";
 	private static final String JSON_ALIGNMENT = "alignment";
 	private static final String JSON_POS_X = "pos_x";
 	private static final String JSON_POS_Y = "pos_y";
@@ -221,8 +218,6 @@ public final class Frame implements Draw {
 	
 	private void build(final UI ui, final JSONObject frameData){
 		try {
-			Script script = null;
-			
 			// Load frame fields
 			if(frameData.containsKey(JSON_TITLE)){
 				this.title = (String)frameData.get(JSON_TITLE);
@@ -249,10 +244,6 @@ public final class Frame implements Draw {
 				this.sizeY = ((Number)frameData.get(JSON_SIZE_Y)).intValue();
 			}
 			
-			if(frameData.containsKey(JSON_LUA_SCRIPT)){
-				script = LuaEngine.load((String)frameData.get(JSON_LUA_SCRIPT));
-			}
-			
 			if(frameData.containsKey(JSON_VISIBLE)){
 				this.visible = (Boolean)frameData.get(JSON_VISIBLE);
 			}
@@ -265,14 +256,14 @@ public final class Frame implements Draw {
 			if(frameData.containsKey(JSON_LAYER_BACKGROUND)){
 				JSONArray data = (JSONArray)frameData.get(JSON_LAYER_BACKGROUND);
 				if(data != null){
-					layers[FRAME_LAYER_BACKGROUND].build(this, ui, data, script);
+					layers[FRAME_LAYER_BACKGROUND].build(this, ui, data);
 				}
 			}
 			
 			if(frameData.containsKey(JSON_LAYER_ARTWORK)){
 				JSONArray data = (JSONArray)frameData.get(JSON_LAYER_ARTWORK);
 				if(data != null){
-					layers[FRAME_LAYER_ARTWORK].build(this, ui, data, script);
+					layers[FRAME_LAYER_ARTWORK].build(this, ui, data);
 				}
 			}
 			
@@ -280,21 +271,21 @@ public final class Frame implements Draw {
 				JSONArray data = (JSONArray)frameData.get(JSON_LAYER_BORDER);
 				
 				if(data != null){
-					layers[FRAME_LAYER_BORDER].build(this, ui, data, script);
+					layers[FRAME_LAYER_BORDER].build(this, ui, data);
 				}
 			}
 			
 			if(frameData.containsKey(JSON_LAYER_OVERLAY)){
 				JSONArray data = (JSONArray)frameData.get(JSON_LAYER_OVERLAY);
 				if(data != null){
-					layers[FRAME_LAYER_OVERLAY].build(this, ui, data, script);
+					layers[FRAME_LAYER_OVERLAY].build(this, ui, data);
 				}
 			}
 			
 			if(frameData.containsKey(JSON_LAYER_HIGHLIGHT)){
 				JSONArray data = (JSONArray)frameData.get(JSON_LAYER_HIGHLIGHT);
 				if(data != null){
-					layers[FRAME_LAYER_HIGHLIGHT].build(this, ui, data, script);
+					layers[FRAME_LAYER_HIGHLIGHT].build(this, ui, data);
 				}
 			}
 		}
