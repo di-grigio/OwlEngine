@@ -12,6 +12,7 @@ public final class LuaScript implements Script {
 
 	public LuaScript(final LuaValue globals, final String method) {
 		this.globals = globals;
+		this.method = method;
 	}
 	
 	@Override
