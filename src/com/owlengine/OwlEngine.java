@@ -11,15 +11,17 @@ public final class OwlEngine implements Disposable {
 
 	private Assets assets;
 	private SceneMng sceneMng;
+	private LuaEngine luaEngine;
 	
-	public OwlEngine(final LuaLib lib) {
-		// 
-		assets = new Assets();
-		sceneMng = new SceneMng();
-		
-		// static 
+	protected OwlEngine(final LuaLib luaLib) {
 		new Tools();
-		new LuaEngine(sceneMng, lib);
+		
+		//
+		this.assets = new Assets();
+		this.sceneMng = new SceneMng();
+		
+		//
+		new LuaEngine(sceneMng, luaLib);
 	}
 	
 	public SceneMng getSceneMng(){
@@ -29,7 +31,11 @@ public final class OwlEngine implements Disposable {
 	public Assets getAssets(){
 		return assets;
 	}
-
+	
+	public LuaEngine getLuaEngine(){
+		return luaEngine;
+	}
+	
 	@Override
 	public void dispose() {
 		assets.dispose();

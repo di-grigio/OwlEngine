@@ -78,16 +78,30 @@ public final class UserInput implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if (button == Buttons.LEFT) {
-			UserInput.listener.event(Event.MOUSE_KEY_LEFT);
-			return true;     
-		}
-		else if(button == Buttons.RIGHT){
-			UserInput.listener.event(Event.MOUSE_KEY_RIGHT);
-			return true;
-		}
-		else{
-			return false;
+		switch (button) {
+		
+			case Buttons.LEFT:
+				UserInput.listener.event(Event.MOUSE_KEY_LEFT);
+				return true;
+				
+			case Buttons.RIGHT:
+				UserInput.listener.event(Event.MOUSE_KEY_RIGHT);
+				return true;
+				
+			case Buttons.MIDDLE:
+				UserInput.listener.event(Event.MOUSE_KEY_MIDDLE);
+				return true;
+				
+			case Buttons.FORWARD:
+				UserInput.listener.event(Event.MOUSE_KEY_FORWARD);
+				return true;
+				
+			case Buttons.BACK:
+				UserInput.listener.event(Event.MOUSE_KEY_BACK);
+				return true;
+				
+			default:
+				return false;
 		}
 	}
 
