@@ -6,6 +6,10 @@ import com.owlengine.config.OwlConfig;
 
 public final class OwlFrame {
 
+	public OwlFrame(final OwlCycle cycle){
+		new LwjglApplication(cycle, buildLwjglConfig(new OwlConfig()));
+	}
+	
 	public OwlFrame(final OwlConfig config, final OwlCycle cycle) {
 		new LwjglApplication(cycle, buildLwjglConfig(config));
 	}
