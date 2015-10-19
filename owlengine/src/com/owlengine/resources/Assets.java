@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.owlengine.tools.Log;
 
 public final class Assets implements Disposable {
@@ -46,8 +47,13 @@ public final class Assets implements Disposable {
 		if(!manager.isLoaded(path)){
 			manager.load(path, Texture.class);
 		
-			while(!manager.update()){} // wait
-			Log.debug("Texture: " + path + " loaded");
+			try{
+				while(!manager.update()){} // wait
+				Log.debug("Texture: " + path + " loaded");
+			}
+			catch(GdxRuntimeException e){
+				Log.err("Texture: " + path + " cant be loaded");
+			}
 		}
 	}
 	

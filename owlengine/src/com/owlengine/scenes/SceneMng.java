@@ -15,6 +15,7 @@ public final class SceneMng implements Disposable, Event {
 		if(current != null){
 			this.current.event(Event.SCENE_CLOSE);
 			current.dispose();
+			this.current = null;
 		}
 		
 		this.current = scene;

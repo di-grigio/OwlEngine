@@ -19,14 +19,11 @@ abstract public class OwlCycle implements ApplicationListener {
 		engine = new OwlEngine(luaLib);
 		setup();
 	}
-
+	
 	public void setup() {}
 
 	@Override
 	public void render() {}
-	
-	@Override
-	public void dispose() {}
 
 	@Override
 	public void pause() {}
