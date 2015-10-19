@@ -1,4 +1,0 @@
-OwlEngine: 1.1.12
-Author: Leo-di-Grigio
-
-Test 1:  Setup simple project.

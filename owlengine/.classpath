@@ -14,5 +14,12 @@
 	<classpathentry exported="true" kind="lib" path="lib/gdx-freetype-1.5.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gdx-freetype-platform-1.5.4-natives-desktop.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gdx-platform-1.5.4-natives-desktop.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/asm-4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jsonbeans-0.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/kryo-2.20.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/kryonet-2.21.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/minlog-none-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/objenesis-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/reflectasm-1.07.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
