@@ -12,7 +12,7 @@ final class OwlConnection {
     private Client client;
     
     public OwlConnection(OwlNetProtocol protocol, Listener listener, String ip, int portTcp, int portUdp) throws IOException {
-        client = new Client();
+        client = new Client(protocol.getClientWriteBufferSize(), protocol.getClientObjectBufferSize());
         client.start();
         protocol.register(client);
         

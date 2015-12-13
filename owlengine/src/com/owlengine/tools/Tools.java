@@ -12,6 +12,10 @@ public final class Tools {
 		rand = new Random(System.currentTimeMillis());
 	}
 	
+	public static int rand(){
+		return rand.nextInt();
+	}
+	
 	public static int rand(int min, int max){
 		return rand.nextInt((max - min) + 1) + min;
 	}
@@ -20,11 +24,15 @@ public final class Tools {
 		return rand.nextInt((max - min) + 1) + min;
 	}
 
-	public static float rand(float min, float max){
+	public static float frand(){
+		return rand.nextFloat();
+	}
+	
+	public static float frand(float min, float max){
 		return rand.nextFloat() * (max - min) + min;
 	}
 	
-	public static float rand(Random rand, float min, float max){
+	public static float frand(Random rand, float min, float max){
 		return rand.nextFloat() * (max - min) + min;
 	}
 	

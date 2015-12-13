@@ -11,8 +11,7 @@ final class OwlServer {
     private Server server;
     
     public OwlServer(OwlNetProtocol protocol, Listener listener, Class<? extends Connection> connectionHandler, int portTcp, int portUdp) throws IOException {
-        
-        server = new Server() {
+        server = new Server(protocol.getServerWriteBufferSize(), protocol.getServerObjectBufferSize()) {
             @Override
             protected Connection newConnection() {
                 try {

@@ -5,21 +5,25 @@ import java.io.IOException;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
-public final class OwlNetwork {
+public class OwlNetwork {
 	
+	private final OwlNetProtocol protocol;
 	private OwlServer server;
 	private OwlConnection connection;
 	
-	public OwlNetwork() {
-	    
-    }
+	public OwlNetwork(OwlNetProtocol protocol) {
+		this.protocol = protocol;
+	}
 	
-	public void serverStart(OwlNetProtocol protocol, Listener listener, Class<? extends Connection> connectionHandler, int portTcp, int portUdp) throws IOException {
+	public void serverStart(Listener listener, Class<? extends Connection> connectionHandler, int portTcp, int portUdp) throws IOException {
 	    server = new OwlServer(protocol, listener, connectionHandler, portTcp, portUdp);
 	}
 	
 	public void serverClose(){
-	    server.close();
+		if(server != null){
+			server.close();
+			server = null;
+		}
 	}
 	
 	public void serverSendTCP(int connectionId, Object obj){
@@ -38,12 +42,18 @@ public final class OwlNetwork {
         server.serverSendToAllUDP(obj);
     }
 
-    public void connectionConnect(OwlNetProtocol protocol, Listener listener, String ip, int portTcp, int portUdp) throws IOException {
+    public void connectionConnect(Listener listener, String ip, int portTcp, int portUdp) throws IOException {
         connection = new OwlConnection(protocol, listener, ip, portTcp, portUdp);
     }
     
     public void connectionClose(){
-        connection.close();
+    	if(connection != null){
+    		if(connection.isConnected()){
+    			connection.close();
+    		}
+    		
+    		connection = null;
+    	}
     }
     
     public boolean connectionIsConnected(){

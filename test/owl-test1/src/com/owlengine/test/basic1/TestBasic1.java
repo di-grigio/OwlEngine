@@ -8,7 +8,7 @@ import com.owlengine.config.OwlConfig;
  * @title: Test Basic 1
  * @author: Leo-di-Grigio
  * @todo: Basic Owl project test
- * @lastcheck: 0.1.14
+ * @lastcheck: 0.1.16
  */
 
 public class TestBasic1 {

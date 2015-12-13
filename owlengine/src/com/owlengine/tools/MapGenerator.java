@@ -16,24 +16,24 @@ public final class MapGenerator {
 		Random rand = new Random(seed);
 		
 		int areas = (sizeX*sizeY) / noize;
-		int [][] ret = new int[sizeX][sizeY];
-		int [][] sites = new int[areas][3];
+		int [][] result = new int[sizeX][sizeY];
+		int [][] layers = new int[areas][3];
 		int freeDots = 0;
 		
 		for(int i = 0; i < sizeX; ++i){
 			for(int j = 0; j < sizeY; ++j){
-				ret[i][j] = -1;
+				result[i][j] = -1;
 				++freeDots;
 			}
 		}
 		
 		for(int i = 0; i < areas; ++i){
-			sites[i][0] = rand.nextInt(sizeX);
-			sites[i][1] = rand.nextInt(sizeY);
-			sites[i][2] = Tools.rand(rand, 0, colors - 1);
+			layers[i][0] = rand.nextInt(sizeX);
+			layers[i][1] = rand.nextInt(sizeY);
+			layers[i][2] = Tools.rand(rand, 0, colors - 1);
 			
-			if(ret[sites[i][0]][sites[i][1]] == -1){
-				ret[sites[i][0]][sites[i][1]] = sites[i][2];
+			if(result[layers[i][0]][layers[i][1]] == -1){
+				result[layers[i][0]][layers[i][1]] = layers[i][2];
 				--freeDots;
 			}
 		}
@@ -42,7 +42,7 @@ public final class MapGenerator {
 		
 		for(int i = 0; i < areas; ++i){
 			HashSet<int[]> lines = new HashSet<int[]>();
-			lines.add(sites[i]);
+			lines.add(layers[i]);
 			sets.add(lines);
 		}
 		
@@ -55,7 +55,7 @@ public final class MapGenerator {
 				for(int [] dots: set){
 					int x1, x2 , x = dots[0];
 					int y = dots[1];
-					int v = dots[2];
+					int tmp = dots[2];
 					
 					if(x == 0){ 
 						x1 = sizeX - 1;
@@ -71,32 +71,32 @@ public final class MapGenerator {
 						x2 = x + 1;
 					}
 					
-					if(ret[x1][y] == -1){
-						newSet.add(new int[]{x1, y, v});
+					if(result[x1][y] == -1){
+						newSet.add(new int[]{x1, y, tmp});
 						--freeDots;
-						ret[x1][y] = v;
+						result[x1][y] = tmp;
 					}
 					
-					if(ret[x2][y]==-1){
-						newSet.add(new int[]{x2, y, v});
+					if(result[x2][y]==-1){
+						newSet.add(new int[]{x2, y, tmp});
 						--freeDots;
-						ret[x2][y] = v;
+						result[x2][y] = tmp;
 					}
 					
 					
 					if(y != 0){
-						if(ret[x][y-1] == -1){
-							newSet.add(new int[]{x, y - 1, v});
+						if(result[x][y-1] == -1){
+							newSet.add(new int[]{x, y - 1, tmp});
 							--freeDots;
-							ret[x][y-1] = v;
+							result[x][y-1] = tmp;
 						}
 					}
 					
 					if(y != sizeY - 1){
-						if(ret[x][y+1] == -1){
-							newSet.add(new int[]{x, y + 1, v});
+						if(result[x][y+1] == -1){
+							newSet.add(new int[]{x, y + 1, tmp});
 							--freeDots;
-							ret[x][y+1] = v;
+							result[x][y+1] = tmp;
 						}
 					}
 				}
@@ -107,7 +107,7 @@ public final class MapGenerator {
 			sets = newSets;
 		}
 		
-		return ret;
+		return result;
 	}
 
 	public static final void logMap(int [][] map, int sizeX, int sizeY, int colors){		

@@ -14,10 +14,10 @@ import com.owlengine.net.OwlNetwork;
 import com.owlengine.tools.Log;
 
 /*
- * @title: Test Net 1
- * @author: Leo-di-Grigio
- * @todo: Basic Owl Networking
- * @lastcheck 0.1.14: 
+ * $title: Test Net 1
+ * $author: Leo-di-Grigio
+ * $todo: Basic Owl Networking
+ * $lastcheck 0.1.16: 
  */
 public class TestNet1 {
 
@@ -36,7 +36,6 @@ class Config extends OwlConfig {
 
 class Cycle extends OwlCycle {
     
-    private static final Protocol protocol = new Protocol();
     private static final String IP = "127.0.0.1";
     private static final int PORT_TCP = 9600;
     private static final int PORT_UDP = 9600;
@@ -48,7 +47,7 @@ class Cycle extends OwlCycle {
     
     @Override
     public void setup() {
-        network = new OwlNetwork();
+        network = new OwlNetwork(new Protocol());
         serverListener = new ServerListener();
         clientListener = new ClientListener();
         
@@ -58,7 +57,7 @@ class Cycle extends OwlCycle {
     
     private void runServer() {
         try {
-            network.serverStart(protocol, serverListener, ServerConnectionHandler.class, PORT_TCP, PORT_UDP);
+            network.serverStart(serverListener, ServerConnectionHandler.class, PORT_TCP, PORT_UDP);
             Log.debug("OwlNetwork server binded at tcp: " + PORT_TCP + " udp: " + PORT_UDP);
         }
         catch (IOException e) {
@@ -69,7 +68,7 @@ class Cycle extends OwlCycle {
 
     private void runConnection() {
         try {
-            network.connectionConnect(protocol, clientListener, IP, PORT_TCP, PORT_UDP);
+            network.connectionConnect(clientListener, IP, PORT_TCP, PORT_UDP);
             Log.debug("Connected successful to \"" + IP + "\"");
         }
         catch (IOException e) {
@@ -106,6 +105,26 @@ class Protocol implements OwlNetProtocol {
     
     private static final class Message {
         
+    }
+
+    @Override
+    public int getClientWriteBufferSize() {
+        return 8192;
+    }
+
+    @Override
+    public int getClientObjectBufferSize() {
+        return 2048;
+    }
+
+    @Override
+    public int getServerWriteBufferSize() {
+        return 8192;
+    }
+
+    @Override
+    public int getServerObjectBufferSize() {
+        return 2048;
     }
 }
 

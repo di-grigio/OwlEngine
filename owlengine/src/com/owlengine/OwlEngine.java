@@ -13,7 +13,7 @@ public final class OwlEngine implements Disposable {
 	private SceneMng sceneMng;
 	private LuaEngine luaEngine;
 	
-	protected OwlEngine(final LuaLib luaLib) {
+	public OwlEngine(final LuaLib luaLib) {
 		new Tools();
 		
 		//
