@@ -4,6 +4,7 @@ import org.json.simple.JSONObject;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -56,6 +57,20 @@ public final class Assets implements Disposable {
 			}
 		}
 	}
+	
+	public static void loadTex(String path, TextureParameter param){    
+        if(!manager.isLoaded(path)){
+            manager.load(path, Texture.class, param);
+        
+            try{
+                while(!manager.update()){} // wait
+                Log.debug("Texture: " + path + " loaded");
+            }
+            catch(GdxRuntimeException e){
+                Log.err("Texture: " + path + " cant be loaded");
+            }
+        }
+    }
 	
 	public static void loadFont(String path){
 		if(!manager.isLoaded(path)){
@@ -138,6 +153,7 @@ public final class Assets implements Disposable {
 			return new BitmapFont();
 		}
 		else{
+			param.characters = FreeTypeFontGenerator.DEFAULT_CHARS + RUSSIAN_CHARS;
 			BitmapFont font = generator.generateFont(param);
 			return font;
 		}
