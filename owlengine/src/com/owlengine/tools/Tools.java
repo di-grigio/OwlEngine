@@ -3,6 +3,7 @@ package com.owlengine.tools;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.math.Vector2;
 
 public final class Tools {
 
@@ -38,6 +39,14 @@ public final class Tools {
 	
 	public static float getRange(int x1, int y1, int x2, int y2) {
 		return (float)Math.sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
+	}
+   
+	public static float getRange(float x1, float y1, float x2, float y2) {
+        return (float)Math.sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
+    }
+
+	public static float getRange(Vector2 v1, Vector2 v2) {
+		return Vector2.len(v1.x - v2.x, v1.y - v2.y);
 	}
 	
 	public static Pixmap pixmapFlipX(Pixmap pix) {

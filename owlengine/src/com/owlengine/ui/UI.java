@@ -56,7 +56,7 @@ public final class UI implements Draw, Event {
 				in.read(arr);
 				in.close();
 				
-				JSONArray jsonArray = (JSONArray)JSONValue.parse(new String(arr));
+				JSONArray jsonArray = (JSONArray)JSONValue.parse(new String(arr, "UTF-8"));
 					
 				if(jsonArray == null){
 					Log.err("Error #4: JSON parse error");
@@ -208,6 +208,15 @@ public final class UI implements Draw, Event {
 		}
 
 		private void updateSelecting() {
+			// reset selecting
+			selectedFrame = null;
+			
+			if(selectedWidget != null){
+				selectedWidget.setSelected(false);
+				selectedWidget = null;
+			}
+			
+			// select
 			if(activeFrame != null && activeFrame.visible() && activeFrame.inBound()){
 				selectedFrame = activeFrame;
 				selectedWidget = activeFrame.selectWidget();
@@ -216,15 +225,7 @@ public final class UI implements Draw, Event {
 					selectedWidget.setSelected(true);
 				}
 			}
-			else{
-				// reset selecting
-				selectedFrame = null;
-				
-				if(selectedWidget != null){
-					selectedWidget.setSelected(false);
-					selectedWidget = null;
-				}
-			
+			else{			
 				// search new selecting widget
 				for(Frame frame: framesId.values()){
 					if(frame.visible() && frame.inBound()){
