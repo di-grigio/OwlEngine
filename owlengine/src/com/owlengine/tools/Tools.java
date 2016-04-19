@@ -46,7 +46,11 @@ public final class Tools {
     }
 
 	public static float getRange(Vector2 v1, Vector2 v2) {
+<<<<<<< HEAD
 		return Vector2.len(v1.x - v2.x, v1.y - v2.y);
+=======
+		return (float)Math.sqrt((v2.x - v1.x)*(v2.x - v1.x) + (v2.y - v1.y)*(v2.y - v1.y));
+>>>>>>> origin/master
 	}
 	
 	public static Pixmap pixmapFlipX(Pixmap pix) {
