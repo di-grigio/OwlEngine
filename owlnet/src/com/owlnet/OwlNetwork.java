@@ -1,4 +1,4 @@
-package com.owlengine.net;
+package com.owlnet;
 
 import java.io.IOException;
 

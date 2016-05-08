@@ -9,15 +9,15 @@ import com.esotericsoftware.kryonet.Listener;
 import com.owlengine.OwlCycle;
 import com.owlengine.OwlFrame;
 import com.owlengine.config.OwlConfig;
-import com.owlengine.net.OwlNetProtocol;
-import com.owlengine.net.OwlNetwork;
 import com.owlengine.tools.Log;
+import com.owlnet.OwlNetProtocol;
+import com.owlnet.OwlNetwork;
 
 /*
  * $title: Test Net 1
  * $author: Leo-di-Grigio
  * $todo: Basic Owl Networking
- * $lastcheck 0.1.16: 
+ * $lastcheck 0.1.20: 
  */
 public class TestNet1 {
 
