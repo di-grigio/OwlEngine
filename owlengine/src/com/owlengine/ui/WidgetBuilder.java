@@ -84,11 +84,11 @@ final class WidgetBuilder {
 	private static final String CHECKBOX_DEFAULT_VALUE = "value";
 	
 	protected static Widget build(final Frame frame, final JSONObject json) {
-		Widget widget = null;
-		
 		if(json.containsKey(CONTENT)){
 			try {
 				final String type = (String)json.get(CONTENT);
+				
+				Widget widget = null;
 				
 				// Components
 				if(type.equals(WIDGET_TYPE_LABEL)){
@@ -139,6 +139,15 @@ final class WidgetBuilder {
 	}
 
 	private static Widget buildWidget(final Widget widget, final Frame frame, final JSONObject json) {
+		// Title
+		if(json.containsKey(TITLE)){
+			widget.setTitle((String)json.get(TITLE));
+		}
+		else{
+			Log.err("Error #11: JSON parse error - Field 'title' is empty");
+			return null;
+		}
+		
 		// External data loading
 		if(json.containsKey(TEXTURE_NORMAL)){
 			String path = (String)json.get(TEXTURE_NORMAL);
@@ -175,11 +184,7 @@ final class WidgetBuilder {
 			}	
 		}
 		
-		// Another widget data
-		if(json.containsKey(TITLE)){
-			widget.setTitle((String)json.get(TITLE));
-		}
-		
+		// Position data
 		if(json.containsKey(ALIGNMENT)){
 			String value = (String)json.get(ALIGNMENT);
 			widget.setAlignment(Alignment.toInt(value));
@@ -204,6 +209,7 @@ final class WidgetBuilder {
 			widget.setSizeY(((Number)json.get(SIZE_Y)).intValue());
 		}
 		
+		// Flags
 		if(json.containsKey(VISIBLE)){
 			widget.setVisibible((Boolean)json.get(VISIBLE));
 		}

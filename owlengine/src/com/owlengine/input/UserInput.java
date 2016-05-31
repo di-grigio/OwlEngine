@@ -115,6 +115,7 @@ public final class UserInput implements InputProcessor {
 	
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		UserInput.listener.event(Event.MOUSE_KEY_UP);
 		return false;
 	}
 }

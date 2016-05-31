@@ -10,6 +10,8 @@ public class OwlConfig {
 	private static final boolean DEFAULT_FRAME_RESIZABLE = false;
 	private static final boolean DEFAULT_FRAME_FULLSCREEN = false;
 
+	private static final int DEFAULT_SMOTH_SAMPLES = 0;
+
 	public String frameTitle() {
 		return DEFAULT_FRAME_TITLE;
 	}
@@ -28,5 +30,9 @@ public class OwlConfig {
 	
 	public boolean frameFullscreen(){
 		return DEFAULT_FRAME_FULLSCREEN;
+	}
+
+	public int smothSamples() {
+		return DEFAULT_SMOTH_SAMPLES;
 	}
 }

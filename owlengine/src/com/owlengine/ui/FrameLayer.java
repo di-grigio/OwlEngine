@@ -18,8 +18,15 @@ public final class FrameLayer implements Draw {
 			
 			// build process
 			for(int i = 0; i < data.size(); ++i){
-				widgets[i] = WidgetBuilder.build(frame, (JSONObject)data.get(i));
-				ui.registerWidget(widgets[i]);
+				Widget widget = WidgetBuilder.build(frame, (JSONObject)data.get(i));
+				
+				if(widget != null){
+					widgets[i] = widget;
+					ui.registerWidget(widgets[i]);
+				}
+				else{
+					Log.err("Error #12: Widget not builded");
+				}
 			}
 		}
 		catch(ClassCastException e){

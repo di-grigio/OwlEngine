@@ -3,6 +3,7 @@ package com.owlengine.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.utils.Disposable;
 import com.owlengine.interfaces.Event;
 import com.owlengine.tools.Log;
@@ -32,18 +33,54 @@ public final class SceneMng implements Disposable, Event {
 		}
 	}
 	
-	public void draw(final SpriteBatch sceneBatch, final SpriteBatch uiBatch) {
+	public void draw(final SpriteBatch batchScene) {
 		if(current != null){
-			sceneBatch.begin();
-			current.draw(sceneBatch);
-			sceneBatch.end();
-			
-			uiBatch.begin();
-			current.drawUI(uiBatch);
-			uiBatch.end();
+			batchScene.begin();
+			current.draw(batchScene);
+			batchScene.end();
 		}
 		else{
-			Log.err("Engine ERR: Scenes not found (drawScene)");
+			Log.err("Engine ERR: Scenes not found (drawScene (1))");
+			Gdx.app.exit();
+		}
+	}
+	
+	public void draw(final SpriteBatch batchScene, final SpriteBatch batchUi) {
+		if(current != null){
+			batchScene.begin();
+			current.draw(batchScene);
+			batchScene.end();
+			
+			batchUi.begin();
+			current.drawUI(batchUi);
+			batchUi.end();
+		}
+		else{
+			Log.err("Engine ERR: Scenes not found (drawScene (2))");
+			Gdx.app.exit();
+		}
+	}
+	
+	public void drawUI(final SpriteBatch batchUi){
+		if(current != null){
+			batchUi.begin();
+			current.drawUI(batchUi);
+			batchUi.end();
+		}
+		else{
+			Log.err("SceneMng.drawUI(): Scene not found");
+			Gdx.app.exit();
+		}
+	}
+	
+	public void drawCache(SpriteCache cache){
+		if(current != null){
+			cache.begin();
+			current.drawCache(cache);
+			cache.end();
+		}
+		else{
+			Log.err("Engine ERR: Scenes not found (drawCache)");
 			Gdx.app.exit();
 		}
 	}
@@ -59,7 +96,7 @@ public final class SceneMng implements Disposable, Event {
 			Gdx.app.exit();
 		}
 	}
-
+	
 	public void postUpdate(){
 		if(current != null){
 			current.postUpdate();
@@ -103,6 +140,13 @@ public final class SceneMng implements Disposable, Event {
 			if(!current.widgetSelected()){
 				current.event(code, data);
 			}
+		}
+	}
+
+	@Override
+	public void customEvent(int code, Object data) {
+		if(current != null){
+			current.customEvent(code, data);
 		}
 	}
 }

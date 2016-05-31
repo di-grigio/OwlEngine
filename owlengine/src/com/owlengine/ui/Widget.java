@@ -196,7 +196,7 @@ abstract public class Widget implements Draw {
 	public final void setScriptOnActionSecond(final Script script){
 		this.scriptOnActionSecond = script;
 	}
-	
+
 	protected final Script eventOnLoad(){
 		return scriptOnLoad;
 	}

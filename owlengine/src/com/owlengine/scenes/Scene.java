@@ -2,6 +2,7 @@ package com.owlengine.scenes;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.utils.Disposable;
 import com.owlengine.interfaces.Event;
 import com.owlengine.ui.UI;
@@ -36,6 +37,8 @@ public abstract class Scene implements Event, Disposable {
 	
 	protected void draw(SpriteBatch batch) {}
 	
+	protected void drawCache(SpriteCache cache) {}
+	
 	protected void drawHUD(SpriteBatch batch) {}
 	
 	protected void postUpdate() {};
@@ -49,6 +52,9 @@ public abstract class Scene implements Event, Disposable {
 	
 	@Override
 	public void event(final int code, final char data) {}
+	
+	@Override
+	public void customEvent(int code, Object data) {}
 	
 	@Override
 	public void dispose() {}

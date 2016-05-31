@@ -23,6 +23,7 @@ public final class OwlFrame {
 		frameConfig.height = config.frameHeight();
 		frameConfig.fullscreen = config.frameFullscreen();
 		frameConfig.resizable = config.frameResizable();
+		frameConfig.samples = config.smothSamples();
 		
 		return frameConfig;
 	}	

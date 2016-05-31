@@ -112,6 +112,10 @@ public final class UI implements Draw, Event {
 		return state.selected();
 	}
 	
+	public Widget getSelectedWidget(){
+		return state.selectedWidget;
+	}
+	
 	public Widget getWidget(String title) {
 		return widgetsTitle.get(title);
 	}
@@ -176,6 +180,11 @@ public final class UI implements Draw, Event {
 		}
 	}
 	
+	@Override
+	public void customEvent(int code, Object data) {
+		// no realization
+	}
+	
 	private final class UIState implements Draw {
 
 		private Frame activeFrame;
@@ -234,7 +243,7 @@ public final class UI implements Draw, Event {
 					
 						if(selectedWidget != null){
 							selectedWidget.setSelected(true);
-							selectedFrame = selectedWidget.parent();						
+							selectedFrame = selectedWidget.parent();
 						}
 					}
 				}
